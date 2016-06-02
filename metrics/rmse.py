@@ -1,8 +1,16 @@
+import numpy as np
+
 class rmse:
-	def compute(x,y):
-		s = 0
-		n = 0
-		for i in range(1,len(x)):
-			s += ((x - y) ** 2)
-			n += 1
-		return s/n
+
+  def compute(self,x,y):
+    # just values (second member of tuple)
+    # note: this isn't time aligning at all, just compares the 
+    #       values as they arrive
+    x = map(lambda t: t[1],x)
+    y = map(lambda t: t[1],y)
+    # naively truncate longer array if one is shorter
+    if len(x) > len(y):
+      x = x[0:len(y)]
+    if len(y) > len(x):
+      y = y[0:len(x)]
+    return float(np.mean((np.array(x) - np.array(y))**2))

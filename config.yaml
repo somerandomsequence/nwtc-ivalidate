@@ -1,22 +1,16 @@
-#location:
-#	lat: -105.0
-#	lon: 42.0
 location:
-  i: 500
-  j: 500
+  lat: 45.5902
+  lon: -120.6707
 
 metrics:
   - rmse
 
 left:
-  path: data/d02
+  path: /scratch/cphillip/d01
   format: netcdf
-  var: RAINCV
+  var: WSPD80
 
 right:
-  - path: data/d01
+  - path: /scratch/cphillip/d02
     format: netcdf
-    var: RAINCV
-  - path: data/d03
-    format: netcdf
-    var: RAINCV
+    var: WSPD80
