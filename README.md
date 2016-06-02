@@ -1,4 +1,4 @@
-NREL NWTC Timeseries Comparison Framework
+NREL NWTC TS Comparison Framework
 =========================================
 
 This is a bit of infrastructure code to allow comparison of timeseries from
