@@ -1,6 +1,12 @@
+# netcdf.py
+#
+# This is a basic parser for NetCDF data.
+#
 # This input parser expects to be given a directory filled with netcdf files - each a grid at one particular time
 # we expect that the file has a field called XLAT which is a matrix of latitude values for the grid and
 # XLONG which is a matrix of longitude values for the grid.
+#
+# Caleb Phillips <caleb.phillips@nrel.gov>
 
 import os
 from datetime import datetime
