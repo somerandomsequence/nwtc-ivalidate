@@ -1,0 +1,22 @@
+#location:
+#	lat: -105.0
+#	lon: 42.0
+location:
+  i: 500
+  j: 500
+
+metrics:
+  - rmse
+
+left:
+  path: data/d02
+  format: netcdf
+  var: RAINCV
+
+right:
+  - path: data/d01
+    format: netcdf
+    var: RAINCV
+  - path: data/d03
+    format: netcdf
+    var: RAINCV
