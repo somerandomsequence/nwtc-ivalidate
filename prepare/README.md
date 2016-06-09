@@ -14,11 +14,11 @@ To add your own, simply copy an existing file or use this interface (template):
 
 class foobarbaz:
 
-    # Do something with the given configuration
-	def __init__(self,config):
-    	self.config = config
+  # Do something with the given configuration
+  def __init__(self,config):
+    self.config = config
 
-    # Input is a list of tuples, output is a list of tuples
-	def apply(ts):
-	    return ts
+  # Input & output is a datetime-indexed pandas dataframe
+  def apply(ts):
+    return ts
 ```

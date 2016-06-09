@@ -13,7 +13,7 @@ To add your own, simply copy an existing file or use this interface (template):
 
 class foobarbaz:
 
-  # This function takes two lists of tuples as input
+  # This function takes two datetime-indexed pandas dataframes as input
   # and returns a single float value
   def compute(self,x,y):
     return None    
