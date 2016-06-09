@@ -10,6 +10,12 @@ prepare:
       #n: 23
       period: 500
 
+time:
+  window:
+    lower: 2015-03-01 10:00:00
+    upper: 2015-05-01 10:00:00
+  trim: left # can be left or right
+
 metrics:
   - rmse
 
