@@ -1,16 +1,16 @@
-output: json
-
 location:
   lat: 45.5902
   lon: -120.6707
-
-metrics:
-  - rmse
 
 prepare:
   - trim:
       lower: -1000.0
       upper: 1000.0
+  - linear_interp:
+      n: 23
+
+metrics:
+  - rmse
 
 left:
   name: d01
