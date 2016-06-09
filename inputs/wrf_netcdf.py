@@ -13,7 +13,7 @@ from datetime import datetime
 from netCDF4 import Dataset
 import numpy as np
 
-class netcdf:
+class wrf_netcdf:
 
   def __init__(self,path,var):
     self.path = path

@@ -1,3 +1,7 @@
+output: json
+
+# note: future versions will support multiple
+#       locations, but this version only supports one.
 location:
   lat: 45.5902
   lon: -120.6707
@@ -5,14 +9,19 @@ location:
 metrics:
   - rmse
 
+qaqcs:
+  - trim:
+      low: -1000.0
+      high: 1000.0
+
 left:
   name: d01
   path: /scratch/cphillip/d01
-  format: netcdf
+  format: wrf_netcdf
   var: WSPD80
 
 right:
   - name: d02
     path: /scratch/cphillip/d02
-    format: netcdf
+    format: wrf_netcdf
     var: WSPD80

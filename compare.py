@@ -18,25 +18,31 @@ conf = yaml.load(file(sys.argv[1],'r'))
 left = conf["left"]
 right = conf["right"]
 
-# Load the input format class with the name s
-def get_input_class(s):
-  m = importlib.import_module("inputs."+s)
+# Load the module t class with the name s
+def get_module_class(t,s):
+  m = importlib.import_module(".".join([t,s]))
   return getattr(m,s)
 
-# Load the input metric class with the name s
-def get_metric_class(s):
-  m = importlib.import_module("metrics."+s)
-  return getattr(m,s)
+# Apply a series of transformative modules
+def apply_trans(ts,modlist):
+  for m in modlist:
+    ts = m.apply(ts)
+  return ts
+
+# pre-load all the matric modules into an array
+metrics = [get_module_class("metrics",m)() for m in conf["metrics"]]
+
+# pre-load all the qaqc modules into an array
+qaqcs = [get_module_class("qaqcs",q)() for q in conf["qaqcs"]]
 
 results = []
-left["input"] = get_input_class(left["format"])(left["path"],left["var"])
-left["data"] = left["input"].get_ts(conf["location"])
+left["input"] = get_module_class("inputs",left["format"])(left["path"],left["var"])
+left["data"] = apply_trans(left["input"].get_ts(conf["location"]),qaqcs)
 for i in range(0,len(right)):
-  right[i]["input"] = get_input_class(right[i]["format"])(right[i]["path"],right[i]["var"])
-  right[i]["data"] = right[i]["input"].get_ts(conf["location"])
+  right[i]["input"] = get_module_class("inputs",right[i]["format"])(right[i]["path"],right[i]["var"])
+  right[i]["data"] = apply_trans(right[i]["input"].get_ts(conf["location"]),qaqcs)
   results.append({"path": right[i]["path"], "var": right[i]["var"]})
-  for m in conf["metrics"]:
-    right[i]["metric"] = get_metric_class(m)()
-    results[i][m] = right[i]["metric"].compute(left["data"],right[i]["data"])
+  for m in metrics:
+    results[i][m] = m.compute(left["data"],right[i]["data"])
 
 print json.dumps(results)
