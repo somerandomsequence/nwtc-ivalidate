@@ -41,10 +41,3 @@ The current implementation is serial, however future versions may exploit local 
 
   * Loading timeseries data from files (or cache) in parallel
   * Computing metrics for each pair of timeseries in parallel
-
-### To Do
-
-  * Add an interface for generating plots
-  * Add the option for remote (SCP/SFTP) data sources that cache locally
-  * Ensure filesystem access functions are platform independent (i.e., works on Windows)
-  * Create basic notebook interface for interactive analysis
