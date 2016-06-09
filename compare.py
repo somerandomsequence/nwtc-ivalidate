@@ -33,16 +33,19 @@ def apply_trans(ts,modlist):
 metrics = [get_module_class("metrics",m)() for m in conf["metrics"]]
 
 # pre-load all the qa/qc modules into an array
-preproc = [get_module_class("prepare",q)() for q in conf["prepare"]]
+preproc = []
+for q in conf["prepare"]:
+  k,c = q.popitem()
+  preproc.append(get_module_class("prepare",k)(c))
 
 results = []
 left["input"] = get_module_class("inputs",left["format"])(left["path"],left["var"])
-left["data"] = apply_trans(left["input"].get_ts(conf["location"]),qaqcs)
+left["data"] = apply_trans(left["input"].get_ts(conf["location"]),preproc)
 for i in range(0,len(right)):
   right[i]["input"] = get_module_class("inputs",right[i]["format"])(right[i]["path"],right[i]["var"])
-  right[i]["data"] = apply_trans(right[i]["input"].get_ts(conf["location"]),qaqcs)
+  right[i]["data"] = apply_trans(right[i]["input"].get_ts(conf["location"]),preproc)
   results.append({"path": right[i]["path"], "var": right[i]["var"]})
   for m in metrics:
-    results[i][m] = m.compute(left["data"],right[i]["data"])
+    results[i][m.__class__.__name__] = m.compute(left["data"],right[i]["data"])
 
 print json.dumps(results)

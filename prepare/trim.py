@@ -6,9 +6,9 @@
 
 class trim:
 
-	def __init__(self,config):
-		self.upper = config["upper"]
-		self.lower = config["lower"]
+  def __init__(self,config):
+    self.upper = config["upper"]
+    self.lower = config["lower"]
 
-	def apply(ts):
-		return [x for x in ts if x[1] < self.lower or x[1] > self.upper]
+  def apply(self,ts):
+    return [x for x in ts if x[1] >= self.lower or x[1] <= self.upper]

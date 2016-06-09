@@ -9,8 +9,8 @@ metrics:
 
 prepare:
   - trim:
-      low: -1000.0
-      high: 1000.0
+      lower: -1000.0
+      upper: 1000.0
 
 left:
   name: d01
