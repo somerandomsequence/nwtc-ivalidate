@@ -6,11 +6,15 @@ metrics:
   - rmse
 
 left:
+  name: d01
   path: /scratch/cphillip/d01
   format: netcdf
   var: WSPD80
 
 right:
-  - path: /scratch/cphillip/d02
+  - name: d02
+    path: /scratch/cphillip/d02
     format: netcdf
     var: WSPD80
+
+cache: /
