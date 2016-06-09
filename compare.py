@@ -32,8 +32,8 @@ def apply_trans(ts,modlist):
 # pre-load all the matric modules into an array
 metrics = [get_module_class("metrics",m)() for m in conf["metrics"]]
 
-# pre-load all the qaqc modules into an array
-qaqcs = [get_module_class("qaqcs",q)() for q in conf["qaqcs"]]
+# pre-load all the qa/qc modules into an array
+preproc = [get_module_class("prepare",q)() for q in conf["prepare"]]
 
 results = []
 left["input"] = get_module_class("inputs",left["format"])(left["path"],left["var"])

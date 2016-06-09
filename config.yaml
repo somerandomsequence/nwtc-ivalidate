@@ -1,7 +1,5 @@
 output: json
 
-# note: future versions will support multiple
-#       locations, but this version only supports one.
 location:
   lat: 45.5902
   lon: -120.6707
@@ -9,7 +7,7 @@ location:
 metrics:
   - rmse
 
-qaqcs:
+prepare:
   - trim:
       low: -1000.0
       high: 1000.0
