@@ -10,6 +10,7 @@ import yaml
 import sys
 import importlib
 import json
+import dateutil
 sys.path.append('.')
 
 # Check options and load config
@@ -36,9 +37,35 @@ def apply_trans(ts,modlist):
   return ts
 
 def time_align(conf,x,y):
-#  if "window" in conf.keys():
-#    # apply time window
-#  if "trim" in conf.keys():
+  # apply time window
+  if "window" in conf.keys():
+    if conf["window"]["lower"].__class__.__name__ != 'datetime':
+      lower = dateutil.parser.parse(conf["window"]["lower"])
+    else:
+      lower = conf["window"]["lower"]
+    if conf["window"]["upper"].__class__.__name__ != 'datetime':
+      upper = dateutil.parser.parse(conf["window"]["upper"])
+    else:
+      upper = conf["window"]["upper"]
+
+    x = x[x.index <= upper]
+    x = x[x.index >= lower]
+    y = y[y.index <= upper]
+    y = y[y.index >= lower]
+
+  # trim to extent of left or right
+  if "trim" in conf.keys():
+    if conf["trim"] == "left":
+      lower = x.index.min()
+      upper = x.index.max()
+      y = y[y.index <= upper]
+      y = y[y.index >= lower]
+    elif conf["trim"] == "right":
+      lower = y.index.min()
+      upper = y.index.max()
+      x = x[x.index <= upper]
+      x = x[x.index >= lower]
+    
   return (x,y)
     
 

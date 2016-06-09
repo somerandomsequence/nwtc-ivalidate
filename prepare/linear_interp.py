@@ -30,4 +30,5 @@ class linear_interp:
     v = ts.as_matrix()[:,0]
     tprime = self.get_sample_ts(t)
     vprime = np.interp(tprime,t,v)
+    tprime = map(lambda x: datetime.datetime.fromtimestamp(x),tprime)
     return pd.DataFrame(index=tprime,data={ts.columns[0]: vprime})
