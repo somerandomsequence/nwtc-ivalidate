@@ -12,6 +12,7 @@ import os
 from datetime import datetime
 from netCDF4 import Dataset
 import numpy as np
+import pandas as pd
 
 class wrf_netcdf:
 
@@ -29,14 +30,14 @@ class wrf_netcdf:
     return (i,j)
 
   def get_ts(self,loc):
-    r = []
+    df = pd.DataFrame({"t": [], self.var: []})
     for l in os.listdir(self.path):
       ih = Dataset(self.path + "/" + l, 'r')
       i,j = self.get_ij(ih,loc)
       t = datetime.strptime("".join(ih.variables["Times"][0]),"%Y-%m-%d_%H:%M:%S")
       v = ih.variables[self.var][0][i][j]
       ih.close()
-      r.append((t,v))
+      df = df.append([{"t":t, self.var:v}])
 
-    r.sort(key=lambda x: x[1])
-    return r
+    df = df.set_index("t").sort_index()
+    return df

@@ -5,6 +5,7 @@
 # Caleb Phillips <caleb.phillips@nrel.gov>
 
 import numpy as np
+import pandas as pd
 import time
 import datetime
 
@@ -25,9 +26,8 @@ class linear_interp:
     return np.linspace(tmin,tmax,n)
 
   def apply(self,ts):
-    t = map(lambda x: time.mktime(x[0].timetuple()),ts)
-    v = map(lambda x: x[1],ts)
+    t = map(lambda x: time.mktime(x.timetuple()),ts.index)
+    v = ts.as_matrix()[:,0]
     tprime = self.get_sample_ts(t)
     vprime = np.interp(tprime,t,v)
-    return [(tprime[i],vprime[i]) for i in range(0,len(tprime))]
-
+    return pd.DataFrame(index=tprime,data={ts.columns[0]: vprime})

@@ -35,8 +35,15 @@ def apply_trans(ts,modlist):
     ts = m.apply(ts)
   return ts
 
+def time_align(conf,x,y):
+#  if "window" in conf.keys():
+#    # apply time window
+#  if "trim" in conf.keys():
+  return (x,y)
+    
+
 # Pre-load all the metric modules into an array
-metrics = [get_module_class("metrics",m)(conf["time"]) for m in conf["metrics"]]
+metrics = [get_module_class("metrics",m)() for m in conf["metrics"]]
 
 # Pre-load all the qa/qc modules into an array
 preproc = []
@@ -53,7 +60,8 @@ for i in range(0,len(right)):
   right[i]["data"] = apply_trans(right[i]["input"].get_ts(conf["location"]),preproc)
   results.append({"path": right[i]["path"], "var": right[i]["var"], "location": conf["location"]})
   for m in metrics:
-    results[i][m.__class__.__name__] = m.compute(left["data"],right[i]["data"])
+    x,y = time_align(conf["time"],left["data"],right[i]["data"])
+    results[i][m.__class__.__name__] = m.compute(x,y)
 
 # FIXME: allow different output formats besides JSON
 

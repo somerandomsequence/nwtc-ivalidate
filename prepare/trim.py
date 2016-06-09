@@ -11,4 +11,7 @@ class trim:
     self.lower = config["lower"]
 
   def apply(self,ts):
-    return [x for x in ts if x[1] >= self.lower or x[1] <= self.upper]
+    k = ts.columns[0]
+    ts = ts[ts[k] >= self.lower]
+    ts = ts[ts[k] <= self.upper]
+    return ts
