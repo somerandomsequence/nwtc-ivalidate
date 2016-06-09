@@ -1,3 +1,14 @@
+# rmse.py
+#
+# This is a naive root mean squared error (RMSE) calculation
+#
+# If the input vectors differ, it takes the first N elements of each
+# so that the size is the same. Error is computed pairwise without regard
+# to the timestamps.
+#
+# Caleb Phillips <caleb.phillips@nrel.gov>
+
+
 import numpy as np
 
 class rmse:
