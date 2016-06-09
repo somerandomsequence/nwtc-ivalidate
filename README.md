@@ -1,5 +1,5 @@
-NREL NWTC iVerify
-=================
+NREL NWTC iValidate
+===================
 
 This is a bit of infrastructure code to allow comparison of timeseries from
 arbitrary data sources using arbitrary metrics. It is designed to be simple,
