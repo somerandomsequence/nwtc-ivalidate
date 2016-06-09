@@ -7,7 +7,8 @@ prepare:
       lower: -1000.0
       upper: 1000.0
   - linear_interp:
-      n: 23
+      #n: 23
+      period: 500
 
 metrics:
   - rmse

@@ -16,14 +16,13 @@ class linear_interp:
   def get_sample_ts(self,t):
     tmin = min(t)
     tmax = max(t)
-    if "n" in self.config.keys():
-      n = self.config["n"]
-      tprime = np.linspace(tmin,tmax,n)
-    else:
+    if "period" in self.config.keys():
       period = self.config["period"]
-      tprime = np.arrange(tmin,tmax,period)
-      tprime.append(tmax)      
-    return tprime
+      n = ((tmax-tmin)/period) + 1
+    else:
+      n = self.config["n"]
+    
+    return np.linspace(tmin,tmax,n)
 
   def apply(self,ts):
     t = map(lambda x: time.mktime(x[0].timetuple()),ts)
