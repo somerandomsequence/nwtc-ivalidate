@@ -11,6 +11,9 @@ import sys
 import importlib
 import json
 import dateutil
+import re
+import base64
+import requests
 sys.path.append('.')
 
 # Check options and load config
@@ -35,6 +38,44 @@ def apply_trans(ts,modlist):
   for m in modlist:
     ts = m.apply(ts)
   return ts
+
+def get_dap_file(path,config):
+  api_url = "https://dteuqmpcac.execute-api.us-west-2.amazonaws.com/test/request-data"
+  out_dir = config["cache_dir"] + "/dap/" + path  
+  credentials = base64.b64encode("%s:%s" % (config["login"], config["pass"]))
+  auth = {"Authorization": "Basic %s" % credentials}
+
+  params = {
+    "output": "json",
+    "filter": {
+        "Dataset": path
+        #"file_type": ["txt"],
+        #"date_time": {
+        #    "between": ["20160505000000", "20160507000000"]
+        #}
+    }
+  }
+
+  print params
+
+  req = requests.post(api_url, headers=auth, data=json.dumps(params), verify=False)
+  print(req.text)
+
+# Figure out where the file is (local or remote)
+# and fetch if necessary
+def get_file(path,remote):
+  proto = None
+  m = re.match(r"([a-z]+)://(.*)",path,re.IGNORECASE)
+  if m:
+    proto = m.group(1)
+    path = m.group(2)
+  else:
+    proto = "local"
+
+  if proto == "local":
+    return path
+  elif proto == "dap":
+    return get_dap_file(path,remote["dap"])
 
 def time_align(conf,x,y):
   # apply time window
@@ -80,9 +121,11 @@ for q in conf["prepare"]:
 
 # Load the data and compute the metrics
 results = []
+left["path"] = get_file(left["path"],conf["remote"])
 left["input"] = get_module_class("inputs",left["format"])(left["path"],left["var"])
 left["data"] = apply_trans(left["input"].get_ts(conf["location"]),preproc)
 for i in range(0,len(right)):
+  right[i]["path"] = get_file(right[i]["path"],conf["remote"])
   right[i]["input"] = get_module_class("inputs",right[i]["format"])(right[i]["path"],right[i]["var"])
   right[i]["data"] = apply_trans(right[i]["input"].get_ts(conf["location"]),preproc)
   results.append({"path": right[i]["path"], "var": right[i]["var"], "location": conf["location"]})
